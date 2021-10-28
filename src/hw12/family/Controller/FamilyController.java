@@ -2,9 +2,10 @@ package hw12.family.Controller;
 
 import hw12.family.People.Family;
 import hw12.family.People.Human;
-import hw12.family.service.FamilyService;
 import hw12.family.service.Services;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +15,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.lang.Integer.parseInt;
-
 
 public class FamilyController {
     public Services FamilyService;
@@ -107,24 +107,50 @@ public class FamilyController {
     public void processRequests(String choice) {
         switch (choice) {
             case "1":
-                createDefaultFamilies();
+                try {
+                    FamilyService.saveData();
+                } catch (FileNotFoundException e) {
+                    System.out.println("IOException");
+                } catch (IOException e) {
+                    System.out.println("IOException");
+                } catch (Exception e) {
+                    System.out.println("saveData to file Error");
+                    System.out.println(e.getMessage());
+                } finally {
+                    //bos.close();
+                }
                 break;
             case "2":
-                FamilyService.displayAllFamilies();
+                try {
+                    FamilyService.loadData();
+                }catch (FileNotFoundException e) {
+                    System.out.println("IOException");
+                } catch (IOException e) {
+                    System.out.println("IOException");
+                } catch (Exception e) {
+                    System.out.println("loadData from file Error");
+                } finally {
+                }
                 break;
             case "3":
-                FamilyService.getFamiliesBiggerThan(getAmtOfMembers());
+                createDefaultFamilies();
                 break;
             case "4":
-                FamilyService.getFamiliesLessThan(getAmtOfMembers());
+                FamilyService.displayAllFamilies();
                 break;
             case "5":
+                FamilyService.getFamiliesBiggerThan(getAmtOfMembers());
+                break;
+            case "6":
+                FamilyService.getFamiliesLessThan(getAmtOfMembers());
+                break;
+            case "7":
                 int searchedMembers = getAmtOfMembers();
                 int amntOfFamiliesFound = FamilyService.countFamiliesWithMemberNumber(searchedMembers);
                 System.out.println("\t\t\tWe've found " + amntOfFamiliesFound
                         + " families with " + searchedMembers + " family members in them");
                 break;
-            case "6":
+            case "8":
                 Menu subMenu = new Menu();
                 System.out.println("creating mother:");
                 subMenu.getOneFamilyMemberInputDetails();
@@ -138,7 +164,7 @@ public class FamilyController {
                 FamilyService.saveFam(newFam);
 
                 break;
-            case "7":
+            case "9":
                 System.out.println("Input index of family being deleted:");
                 int familiesLeft = FamilyService.count() - 1;
                 System.out.println("available range: from 0 to " + (familiesLeft));
@@ -146,11 +172,11 @@ public class FamilyController {
                 if (!FamilyService.checkInputInt(famIndex, familiesLeft)) {break;}
                 FamilyService.deleteFamilyByIndex(famIndex);
                 break;
-            case "8":
+            case "10":
                   String sChoice = menu.invokeSubmenu();
                   processSubmenu(sChoice);
                     break;
-            case "9":
+            case "11":
                 System.out.println("Input age of children being deleted:");
                 int age = parseInt(hw12.family.service.FamilyService.getKeyboardInput());
             try{

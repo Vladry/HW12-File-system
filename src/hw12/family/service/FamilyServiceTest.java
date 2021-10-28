@@ -4,7 +4,7 @@ import hw12.family.Animals.Dog;
 import hw12.family.Animals.Pet;
 import hw12.family.Controller.FamilyController;
 import hw12.family.Controller.Menu;
-import hw12.family.DAO.CollectionFamilyDao;
+import hw12.family.FamilyDAO.CollectionFamilyDao;
 import hw12.family.People.Family;
 import org.junit.Before;
 import org.junit.Test;

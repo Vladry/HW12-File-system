@@ -1,21 +1,15 @@
 package hw12.family.service;
 
 import hw12.family.Animals.*;
-import hw12.family.DAO.FamilyDAO;
-import hw12.family.FamilyOverflowException;
+import hw12.family.FamilyDAO.FamilyDAO;
+import hw12.family.exceptions.FamilyOverflowException;
 import hw12.family.People.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static java.lang.Integer.parseInt;
 
@@ -36,6 +30,22 @@ public class FamilyService implements Services {
         }
         return choice;
     }
+
+    public void saveData() throws Exception {
+        File file = new File("C:/Users/DELL/IdeaProjects/HW12-File system/familiesData.bin");
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+        oos.writeObject(dao.getAllFamilies());
+        oos.close();
+    };
+    public void loadData() throws Exception {
+        File file = new File("C:/Users/DELL/IdeaProjects/HW12-File system/familiesData.bin");
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+        List<Family> fL = (LinkedList<Family>)ois.readObject();
+        System.out.println(fL);
+        ois.close();
+        dao.saveList(fL);
+    };
+
     public boolean checkInputInt(int ind, int size){
         if (ind < 0 || ind > size) {
             System.out.println("incorrect number, returning to main menu");

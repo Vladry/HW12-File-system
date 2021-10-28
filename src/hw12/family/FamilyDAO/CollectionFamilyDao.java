@@ -1,8 +1,8 @@
-package hw12.family.DAO;
+package hw12.family.FamilyDAO;
 
-import hw12.family.FamilyOverflowException;
 import hw12.family.People.Family;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -64,7 +64,9 @@ public class CollectionFamilyDao implements FamilyDAO {
         return true;
     }
 
-    ;
+    public void saveList(List<Family> fL){
+        Collections.copy(fL, memoryStore);
+    };
 }
 
 

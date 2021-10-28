@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface Services {
+    public void saveData() throws Exception;
+    public void loadData() throws Exception;
     public Human createMember(Map<String, String> params, String member);
     public void register(int birthFamIndex, String bName, String gName);
     public int getIndex(String msg);
