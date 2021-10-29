@@ -1,6 +1,6 @@
 ТЗ:  https://gitlab.com/dan-it/groups/fs15/-/tree/master/java-basic/homework/homework12
 
-выполнено: https://github.com/Vladry/HW12-File-system 
+выполнено: https://github.com/Vladry/HW12-File-system
 
 
 Мини-проект "Счастливая семья" (продолжение)

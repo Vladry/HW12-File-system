@@ -2,10 +2,12 @@ package hw12.family.Controller;
 
 import hw12.family.People.Family;
 import hw12.family.People.Human;
+import hw12.family.exceptions.IncorrectChoiceException;
 import hw12.family.service.Services;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,19 +28,6 @@ public class FamilyController {
     }
 
     public void doControl() {
-        // проверка метода создания животных и метода получения семьи по ID:
-//        FamilyService.addPet(1, new Dog("Dog_Fam1"));
-//        FamilyService.addPet(2, new DomesticCat("Cat_Fam2"));
-//        FamilyService.addPet(3, new Fish("Fish_Fam3"));
-//        FamilyService.getFamilyById(1);
-//        FamilyService.getFamilyById(2);
-//        FamilyService.getFamilyById(3);
-
-
-//        FamilyService.deleteFamilyByIndex(1);
-//        FamilyService.deleteAllChildrenOlderThen(9);
-//        FamilyService.count();
-
         Menu menu = new Menu();
         while (true) {
 
@@ -54,7 +43,11 @@ public class FamilyController {
             if (!skipFlag) {
                 continue;
             }
-            processRequests(choice);
+            try {
+                processRequests(choice);
+            } catch (IncorrectChoiceException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -103,32 +96,38 @@ public class FamilyController {
     }
 
 
-//TODO:   доделывать случаи:   8(дописать),  9(ошибка)
-    public void processRequests(String choice) {
+    public void processRequests(String choice) throws IncorrectChoiceException {
         switch (choice) {
             case "1":
                 try {
                     FamilyService.saveData();
-                } catch (FileNotFoundException e) {
-                    System.out.println("IOException");
+                }
+                catch (NotSerializableException e) {
+                    System.out.println("saveData from file Error");
+                    System.out.println("both Family and Human need to implement Serializable");
                 } catch (IOException e) {
+                    System.out.println("saveData from file Error");
                     System.out.println("IOException");
                 } catch (Exception e) {
                     System.out.println("saveData to file Error");
                     System.out.println(e.getMessage());
+                    e.printStackTrace();
                 } finally {
-                    //bos.close();
                 }
                 break;
             case "2":
                 try {
                     FamilyService.loadData();
-                }catch (FileNotFoundException e) {
-                    System.out.println("IOException");
+                }catch (NotSerializableException e) {
+                    System.out.println("loadData from file Error");
+                    System.out.println("both Family and Human need to implement Serializable");
                 } catch (IOException e) {
                     System.out.println("IOException");
+                    System.out.println("loadData from file Error");
+                    e.printStackTrace();
                 } catch (Exception e) {
                     System.out.println("loadData from file Error");
+                    e.printStackTrace();
                 } finally {
                 }
                 break;
@@ -154,14 +153,28 @@ public class FamilyController {
                 Menu subMenu = new Menu();
                 System.out.println("creating mother:");
                 subMenu.getOneFamilyMemberInputDetails();
-                Human mom = FamilyService.createMember(subMenu.params, "mom");
+                Human mom = null;
+                try {
+                    mom = FamilyService.createMember(subMenu.params, "mom");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    System.out.println("Error: mother has not been created");
+                }
                 System.out.println("creating father:");
                 subMenu.getOneFamilyMemberInputDetails();
-                Human dad = FamilyService.createMember(subMenu.params, "dad");
+                Human dad = null;
+                try {
+                    dad = FamilyService.createMember(subMenu.params, "dad");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    System.out.println("Error: father has not been created");
+                }
+            if (dad != null && mom != null) {
                 Family newFam = new Family(dad, mom);
                 dad.setFamily(newFam);
                 mom.setFamily(newFam);
                 FamilyService.saveFam(newFam);
+            } else System.out.println("ERROR:  this family has NOT been created, provide correct input data!");
 
                 break;
             case "9":
@@ -185,8 +198,10 @@ public class FamilyController {
                 System.out.println("error in deleteAllChildrenOlderThen");
             }
                 break;
+            case "12":
+                System.out.println(FamilyService.count());
+                break;
             default:
-                System.out.println("больше нет команд");
         }
 
     }

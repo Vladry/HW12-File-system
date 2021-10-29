@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CollectionFamilyDao implements FamilyDAO {
 
-    private final List<Family> memoryStore;
+    private List<Family> memoryStore;
 
     {
         memoryStore = new LinkedList<Family>();
@@ -65,7 +65,9 @@ public class CollectionFamilyDao implements FamilyDAO {
     }
 
     public void saveList(List<Family> fL){
-        Collections.copy(fL, memoryStore);
+        memoryStore = null;
+        memoryStore = fL;
+//        Collections.copy(memoryStore, fL);
     };
 }
 

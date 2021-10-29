@@ -1,8 +1,9 @@
 package hw12.family.Animals;
 
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class Pet {
+public abstract class Pet implements Serializable {
 
     protected Species species;
     protected String nickname;

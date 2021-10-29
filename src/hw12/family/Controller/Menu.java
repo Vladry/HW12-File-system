@@ -1,5 +1,6 @@
 package hw12.family.Controller;
 
+import hw12.family.exceptions.EmptyFieldException;
 import hw12.family.exceptions.IncorrectChoiceException;
 import hw12.family.service.FamilyService;
 
@@ -19,7 +20,8 @@ public class Menu {
                     entry("8", "create new family"),
                     entry("9", "delete family by index"),
                     entry("10", "edit family by index"),
-                    entry("11", "delete children older than")
+                    entry("11", "delete children older than"),
+                    entry("12", "count families")
             )
     );
     public Map<String, String> params = new HashMap<>(Map.of(
@@ -47,7 +49,13 @@ public class Menu {
         System.out.println("Provide the following ->");
         for(Map.Entry<String, String> menuItem : this.params.entrySet() ) {
             System.out.println("input " + menuItem.getKey() + ": ");
-            menuItem.setValue(FamilyService.getKeyboardInput());
+            String memberFeature = null;
+            try {
+                memberFeature = FamilyService.getKeyboardInput();
+            } catch (EmptyFieldException e) {
+                System.out.println(e.getMessage());
+            }
+            menuItem.setValue(memberFeature);
         };
     }
 
@@ -57,7 +65,7 @@ public class Menu {
     }
 
     public boolean actionConfirmation(String choice) {
-        String errMsg = "There's no such option. Please, re-input your choice:";
+        String errMsg = "Please, enter a number corresponding to one of the menu items. Make sure you are inputting a number and this number does not include any other characters!";
         String action = null;
         try {
             action = items.get(choice);
@@ -77,8 +85,14 @@ public class Menu {
         System.out.println("1 - to register new born child");
         System.out.println("2 - to adopt a child");
         System.out.println("3 - exit");
-        return FamilyService.getKeyboardInput();
-
+        String answer = FamilyService.getKeyboardInput();
+        try {
+            Integer.parseInt(answer);
+        } catch (NumberFormatException e) {
+            System.out.println("Incorrect input in menu item 8. " +
+                    "\nPlease, enter menu item 8 again and provide a correct answer. Make sure you are inputting a number!");
+        }
+        return answer;
     }
 
 }

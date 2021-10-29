@@ -3,13 +3,14 @@ package hw12.family.People;
 import hw12.family.Animals.Pet;
 import org.w3c.dom.ls.LSOutput;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 //import java.util.LinkedList;
 import java.util.List;
 
 import static hw12.family.People.BabyFactory.deliverABaby;
 
-public class Family implements HumanCreator {
+public class Family implements HumanCreator, Serializable {
 
     private Human mother;
     private Human father;

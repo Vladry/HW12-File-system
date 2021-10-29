@@ -2,6 +2,7 @@ package hw12.family.service;
 
 import hw12.family.Animals.*;
 import hw12.family.FamilyDAO.FamilyDAO;
+import hw12.family.exceptions.EmptyFieldException;
 import hw12.family.exceptions.FamilyOverflowException;
 import hw12.family.People.*;
 
@@ -20,13 +21,16 @@ public class FamilyService implements Services {
         this.dao = dao;
     }
 
-    public static String getKeyboardInput(){
+    public static String getKeyboardInput() throws EmptyFieldException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String choice = null;
         try {
             choice = br.readLine();
         } catch (IOException e) {
             System.out.println("ошибка ввода br.readLine()");
+        }
+        if (choice != null && choice.equals("")) {
+            throw new EmptyFieldException();
         }
         return choice;
     }

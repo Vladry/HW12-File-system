@@ -3,12 +3,13 @@ package hw12.family.People;
 import hw12.family.Animals.Pet;
 import hw12.family.DayOfWeek;
 
+import java.io.Serializable;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.time.LocalDate;
 
-public abstract class Human {
+public abstract class Human implements Serializable {
 
     private String name;
     private String surname;
