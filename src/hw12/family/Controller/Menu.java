@@ -27,6 +27,8 @@ public class Menu {
             )
     );
 
+    //вариант задать компаратор через переопределение метода compare:
+/*
     private final TreeMap<String, String> items = new TreeMap<>(new Comparator<String>(){
         @Override
         public int compare(String a, String b){
@@ -34,6 +36,12 @@ public class Menu {
         }
 
     });
+*/
+    //вариант задать компаратор лямбдой:
+//    private final TreeMap<String, String> items = new TreeMap<>( (a,b)->parseInt(a) - parseInt(b));
+
+    //вариант задать компаратор, на котором настояла IDE:
+    private final TreeMap<String, String> items = new TreeMap<>(Comparator.comparingInt(Integer::parseInt));
 
     public Menu(){
         items.putAll(unSortedMenu);
