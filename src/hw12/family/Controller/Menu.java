@@ -5,10 +5,12 @@ import hw12.family.exceptions.IncorrectChoiceException;
 import hw12.family.service.FamilyService;
 
 import java.util.*;
+
+import static java.lang.Integer.parseInt;
 import static java.util.Map.entry;
 
 public class Menu {
-    private final TreeMap<String, String> items = new TreeMap<>(
+    private final Map<String, String> unSortedMenu = new HashMap<>(
             Map.ofEntries(
                     entry("1", "save families to file"),
                     entry("2", "upload families from file"),
@@ -24,6 +26,20 @@ public class Menu {
                     entry("12", "count families")
             )
     );
+
+    private final TreeMap<String, String> items = new TreeMap<>(new Comparator<String>(){
+        @Override
+        public int compare(String a, String b){
+            return parseInt(a) - parseInt(b);
+        }
+
+    });
+
+    public Menu(){
+        items.putAll(unSortedMenu);
+        System.out.println("sorted menu: " + items);
+    }
+
     public Map<String, String> params = new HashMap<>(Map.of(
             "name",           "empty",
             "surname",      "empty",
@@ -87,7 +103,7 @@ public class Menu {
         System.out.println("3 - exit");
         String answer = FamilyService.getKeyboardInput();
         try {
-            Integer.parseInt(answer);
+            parseInt(answer);
         } catch (NumberFormatException e) {
             System.out.println("Incorrect input in menu item 8. " +
                     "\nPlease, enter menu item 8 again and provide a correct answer. Make sure you are inputting a number!");
